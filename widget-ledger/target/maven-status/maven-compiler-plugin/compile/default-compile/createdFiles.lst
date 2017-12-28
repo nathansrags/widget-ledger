@@ -2,6 +2,7 @@ com\widget\ledger\web\domain\UserProfileType.class
 com\widget\ledger\web\common\util\Constants.class
 com\widget\ledger\web\domain\State.class
 com\widget\ledger\web\domain\QUserProfile.class
+com\widget\ledger\web\common\util\Constants$ROLE_CONSTANTS.class
 com\widget\ledger\web\repository\UserRepository.class
 com\widget\ledger\web\dao\IUserDao.class
 com\widget\ledger\web\authentication\service\AuthenticationSuccessHandlerImpl.class
@@ -9,6 +10,7 @@ com\widget\ledger\web\dao\UserDaoImpl.class
 com\widget\ledger\web\domain\UserProfile.class
 com\widget\ledger\web\predicate\UserPredicate.class
 com\widget\ledger\web\domain\User.class
+com\widget\ledger\web\common\util\Constants$NavigationConstants.class
 com\widget\ledger\web\service\impl\UserServiceImpl.class
 com\widget\ledger\web\controller\WelcomeController.class
 com\widget\ledger\web\service\IUserService.class
