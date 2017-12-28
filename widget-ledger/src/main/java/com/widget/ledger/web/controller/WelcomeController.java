@@ -18,18 +18,19 @@ import com.widget.ledger.web.common.util.Constants;
 
 @Controller
 public class WelcomeController {
+	
 	/**
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @throws IOException
 	 */
-	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public ModelAndView onLoad(HttpServletRequest request, HttpServletResponse response, ModelMap model)
 			throws IOException {
 		return new ModelAndView("welcome");
 	}
-	
+
 	/**
 	 * @return
 	 * @throws IOException
@@ -45,10 +46,8 @@ public class WelcomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logoutPage(HttpServletRequest request,
-			HttpServletResponse response) {
-		final Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
@@ -61,10 +60,8 @@ public class WelcomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/loginFailure", method = RequestMethod.GET)
-	public String loginFailure(HttpServletRequest request,
-			HttpServletResponse response) {
-		final Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+	public String loginFailure(HttpServletRequest request, HttpServletResponse response) {
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}

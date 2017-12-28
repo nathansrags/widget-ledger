@@ -11,7 +11,7 @@
 		</button>
 
 		<div class="navbar-header pull-left">
-			 <a href="<c:url value='/home' />" class="navbar-brand"> <small> <i
+			 <a href="<c:url value='/welcome' />" class="navbar-brand"> <small> <i
 					class="fa fa-leaf"></i> Widget Ledger
 			</small>
 			</a>
