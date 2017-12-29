@@ -6,6 +6,7 @@ com\widget\ledger\web\common\util\Constants$ROLE_CONSTANTS.class
 com\widget\ledger\web\repository\UserRepository.class
 com\widget\ledger\web\dao\IUserDao.class
 com\widget\ledger\web\authentication\service\AuthenticationSuccessHandlerImpl.class
+com\widget\ledger\web\controller\ExpenseController.class
 com\widget\ledger\web\dao\UserDaoImpl.class
 com\widget\ledger\web\domain\UserProfile.class
 com\widget\ledger\web\predicate\UserPredicate.class

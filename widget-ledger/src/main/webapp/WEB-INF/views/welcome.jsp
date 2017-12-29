@@ -46,7 +46,7 @@
 	</head>
 
 	<body class="no-skin">
-		<jsp:include page="authHeader.jsp"></jsp:include>
+		<jsp:include page="authHeader.jsp" />
 		<div class="main-container ace-save-state" id="main-container">
 			<script type="text/javascript">
 				try{ace.settings.loadState('main-container')}catch(e){}
@@ -145,13 +145,17 @@
 										<li><i class="ace-icon fa fa-share green bigger-110"></i>Enter expenses (amount, who paid, for whom, etc.);</li>
 									</ul>
 								</div>
+								<form name="createExpense" method="POST" action="<c:url value='createExpense' />">
+								<input type="hidden" name="${_csrf.parameterName}"
+												value="${_csrf.token}" />
 								<h4>Start a new expense sheet 
 								<span class="header smaller lighter orange">
 								NO REGISTRATION REQUIRED</span></h4>
 								<div class="well">
 									Name it <input type="text" name="sheetId" id="sheetId" />
-									<button class="btn btn-minier btn-yellow" name="newSheetSubmit">Start!</button>
+									<input type="submit" class="btn btn-minier btn-yellow" name="newSheetSubmit" value="Start!" />
 								</div>
+								</form>
 								<h4>Features & Benefits</h4>
 								<div class="well">
 									<ul class="list-unstyled spaced">
@@ -180,32 +184,7 @@
 					</div><!-- /.page-content -->
 				</div>
 			</div><!-- /.main-content -->
-
-			<div class="footer">
-				<div class="footer-inner">
-					<div class="footer-content">
-						<span class="bigger-120">
-							<span class="blue bolder">Widget Ledger</span>
-							Application &copy; 2017-2018
-						</span>
-
-						&nbsp; &nbsp;
-						<span class="action-buttons">
-							<a href="#">
-								<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
-							</a>
-
-							<a href="#">
-								<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
-							</a>
-
-							<a href="#">
-								<i class="ace-icon fa fa-rss-square orange bigger-150"></i>
-							</a>
-						</span>
-					</div>
-				</div>
-			</div>
+			<jsp:include page="authFooter.jsp" />
 
 			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
 				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
