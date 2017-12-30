@@ -83,13 +83,16 @@ public class SplitUpTester {
 					minKey = entry.getKey();
 				}
 			}
-			nextMap.put(minKey + " pays " + maxKey, minVal.abs());
-			finalMap.remove(maxKey);
-			finalMap.remove(minKey);
 			if (maxVal.compareTo(minVal.abs()) > 0) {
+				nextMap.put(minKey + " pays " + maxKey, minVal.abs());
+				finalMap.remove(maxKey);
+				finalMap.remove(minKey);
 				finalMap.put(maxKey, maxVal.add(minVal));
 			} else {
-				finalMap.put(minKey, maxVal.add(minVal));
+				nextMap.put(minKey + " pays " + maxKey, maxVal.abs());
+				finalMap.remove(maxKey);
+				finalMap.remove(minKey);
+				finalMap.put(minKey, minVal.add(maxVal));
 			}
 		}
 	}
@@ -108,11 +111,11 @@ public class SplitUpTester {
 
 	private static void addExpense(final List<ExpenseList> expenseList) {
 		final List<BigDecimal> amounts = new ArrayList<BigDecimal>();
+		amounts.add(new BigDecimal("212.25"));
+		amounts.add(new BigDecimal("225.00"));
+		amounts.add(new BigDecimal("132.34"));
+		amounts.add(new BigDecimal("25.00"));
 		amounts.add(new BigDecimal("100.00"));
-		amounts.add(new BigDecimal("60.00"));
-		amounts.add(new BigDecimal("60.00"));
-		amounts.add(new BigDecimal("100.00"));
-		amounts.add(new BigDecimal("200.00"));
 		String whoPaid[] = { UserList.GOPI.getUser(), UserList.SIVA.getUser(), UserList.BALA.getUser(),
 				UserList.MURUGESH.getUser(),UserList.PUSHPARAJ.getUser() };
 		int i = 0;
