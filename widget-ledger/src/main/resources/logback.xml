@@ -18,7 +18,7 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.springframework" level="DEBUG">
+	<logger name="org.springframework.web.servlet" level="ERROR">
 		<appender-ref ref="dailyRollingFileAppender" />
 	</logger>
 
@@ -26,7 +26,7 @@
 		<appender-ref ref="dailyRollingFileAppender" />
 	</logger>
 
-	<logger name="org.springframework.security.core" level="DEBUG">
+	<logger name="org.springframework.security.core" level="ERROR">
 		<appender-ref ref="dailyRollingFileAppender" />
 	</logger>
 
@@ -34,19 +34,24 @@
 		<appender-ref ref="dailyRollingFileAppender" />
 	</logger>
 
+	<logger name="org.hibernate.SQL" level="TRACE">
+		<appender-ref ref="dailyRollingFileAppender" />
+	</logger>
+	<logger name="org.hibernate.TYPE" level="TRACE">
+		<appender-ref ref="dailyRollingFileAppender" />
+	</logger>
 	<logger name="org.hibernate" level="ERROR">
 		<appender-ref ref="dailyRollingFileAppender" />
 	</logger>
-
 	<logger name="javax.servlet" level="ERROR">
 		<appender-ref ref="dailyRollingFileAppender" />
 	</logger>
-	<logger name="org.apache.tiles" level="DEBUG">
+	<logger name="org.apache.tiles" level="ERROR">
 		<appender-ref ref="dailyRollingFileAppender" />
 	</logger>
 
 	<root>
-		<level value="ERROR" />
+		<level value="INFO" />
 		<appender-ref ref="dailyRollingFileAppender" />
 	</root>
 </configuration>

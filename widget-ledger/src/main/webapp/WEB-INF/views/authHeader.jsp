@@ -241,3 +241,4 @@
 	</div>
 	<!-- /.navbar-container -->
 </div>
+<div class="message-loading-overlay"><h1 style="padding-top: 17%"><i class="fa-spin ace-icon fa fa-refresh blue bigger-250"></i></h1></div>

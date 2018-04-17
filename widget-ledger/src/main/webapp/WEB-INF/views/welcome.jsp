@@ -46,7 +46,25 @@
 	</head>
 
 	<body class="no-skin">
-		<jsp:include page="authHeader.jsp" />
+		<div class="message-loading-overlay"><h1 style="padding-top: 17%"><i class="fa-spin ace-icon fa fa-refresh blue bigger-250"></i></h1></div>
+		<div id="navbar" class="navbar navbar-default          ace-save-state">
+			<div class="navbar-container ace-save-state" id="navbar-container">
+				<button type="button" class="navbar-toggle menu-toggler pull-left"
+					id="menu-toggler" data-target="#sidebar">
+					<span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span>
+		
+					<span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+		
+				<div class="navbar-header pull-left">
+					 <a href="<c:url value='/welcome' />" class="navbar-brand"> <small> <i
+							class="fa fa-leaf"></i> Widget Ledger
+					</small>
+					</a>
+				</div>
+			</div>
+		<!-- /.navbar-container -->
+		</div>
 		<div class="main-container ace-save-state" id="main-container">
 			<script type="text/javascript">
 				try{ace.settings.loadState('main-container')}catch(e){}
@@ -55,9 +73,10 @@
 				<div class="main-content-inner">
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 						<div class="nav-search" id="nav-search">
-							<form class="form-search">Track Sheet
+							<form class="form-search" name="createExpense" method="POST" action="<c:url value='createExpense' />">Track Sheet
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<input type="text" placeholder="Search ..." class="nav-search-input" name="sheetName" id="sheetName" autocomplete="off" value="BX4NWXYGHYRF"/>
 									<i class="ace-icon fa fa-search nav-search-icon"></i>
 								</span>
 							</form>
@@ -65,73 +84,6 @@
 					</div>
 
 					<div class="page-content">
-						<div class="ace-settings-container" id="ace-settings-container">
-							<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
-								<i class="ace-icon fa fa-cog bigger-130"></i>
-							</div>
-
-							<div class="ace-settings-box clearfix" id="ace-settings-box">
-								<div class="pull-left width-50">
-									<div class="ace-settings-item">
-										<div class="pull-left">
-											<select id="skin-colorpicker" class="hide">
-												<option data-skin="no-skin" value="#438EB9">#438EB9</option>
-												<option data-skin="skin-1" value="#222A2D">#222A2D</option>
-												<option data-skin="skin-2" value="#C6487E">#C6487E</option>
-												<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
-											</select>
-										</div>
-										<span>&nbsp; Choose Skin</span>
-									</div>
-
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-navbar" autocomplete="off" />
-										<label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
-									</div>
-
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-sidebar" autocomplete="off" />
-										<label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
-									</div>
-
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-breadcrumbs" autocomplete="off" />
-										<label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
-									</div>
-
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" autocomplete="off" />
-										<label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
-									</div>
-
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-add-container" autocomplete="off" />
-										<label class="lbl" for="ace-settings-add-container">
-											Inside
-											<b>.container</b>
-										</label>
-									</div>
-								</div><!-- /.pull-left -->
-
-								<div class="pull-left width-50">
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" autocomplete="off" />
-										<label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
-									</div>
-
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" autocomplete="off" />
-										<label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
-									</div>
-
-									<div class="ace-settings-item">
-										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" autocomplete="off" />
-										<label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
-									</div>
-								</div><!-- /.pull-left -->
-							</div><!-- /.ace-settings-box -->
-						</div><!-- /.ace-settings-container -->
-
 						<div class="row">
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
@@ -146,13 +98,12 @@
 									</ul>
 								</div>
 								<form name="createExpense" method="POST" action="<c:url value='createExpense' />">
-								<input type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}" />
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<h4>Start a new expense sheet 
 								<span class="header smaller lighter orange">
 								NO REGISTRATION REQUIRED</span></h4>
 								<div class="well">
-									Name it <input type="text" name="sheetId" id="sheetId" />
+									Name it <input type="text" name="sheetName" id="sheetName" />
 									<input type="submit" class="btn btn-minier btn-yellow" name="newSheetSubmit" value="Start!" />
 								</div>
 								</form>
@@ -203,16 +154,13 @@
 <![endif]-->
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+			$(window).load(function() {
+			    $(".message-loading-overlay").fadeOut("slow");
+			})
 		</script>
 		<script src="assets/js/bootstrap.min.js"></script>
 		<script src="assets/js/jquery-ui.custom.min.js"></script>
 		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
-		<script src="assets/js/jquery.easypiechart.min.js"></script>
-		<script src="assets/js/jquery.sparkline.index.min.js"></script>
-		<script src="assets/js/jquery.flot.min.js"></script>
-		<script src="assets/js/jquery.flot.pie.min.js"></script>
-		<script src="assets/js/jquery.flot.resize.min.js"></script>
-
 		<!-- ace scripts -->
 		<script src="assets/js/ace-elements.min.js"></script>
 		<script src="assets/js/ace.min.js"></script>

@@ -722,7 +722,8 @@
 										<div class="space"></div>
 
 										<div class="center">
-											<a href="javascript:history.back()" class="btn btn-grey">
+											<a href="<c:url value='/welcome' />" class="btn btn-grey">
+											<!-- <a href="javascript:history.back()" class="btn btn-grey"> -->
 												<i class="ace-icon fa fa-arrow-left"></i>
 												Go Back
 											</a>${user}

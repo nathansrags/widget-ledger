@@ -111,11 +111,11 @@ public class SplitUpTester {
 
 	private static void addExpense(final List<ExpenseList> expenseList) {
 		final List<BigDecimal> amounts = new ArrayList<BigDecimal>();
-		amounts.add(new BigDecimal("212.25"));
-		amounts.add(new BigDecimal("225.00"));
-		amounts.add(new BigDecimal("132.34"));
-		amounts.add(new BigDecimal("25.00"));
-		amounts.add(new BigDecimal("100.00"));
+		amounts.add(new BigDecimal("110"));
+		amounts.add(new BigDecimal("00"));
+		amounts.add(new BigDecimal("0"));
+		amounts.add(new BigDecimal("0"));
+		amounts.add(new BigDecimal("10"));
 		String whoPaid[] = { UserList.GOPI.getUser(), UserList.SIVA.getUser(), UserList.BALA.getUser(),
 				UserList.MURUGESH.getUser(),UserList.PUSHPARAJ.getUser() };
 		int i = 0;
@@ -127,7 +127,7 @@ public class SplitUpTester {
 			expenseList.add(expense);
 			i++;
 		}
-
+		//http://nathanslearning.com/
 	}
 
 	private static List<ExpenseList> groupAndSort(final List<ExpenseList> expenseList) {
