@@ -7,9 +7,11 @@ package com.widget.ledger.web.to;
 public class UserDetailsTO {
 
 	private Long userDetailId;
-	private String name;
-	private String displayName;
-	private String Description;
+	private String addPersonName;
+	private String addDisplayName;
+	private String addComments;
+	private String uniqueSheetId;
+	private String lastUpdateTime;
 
 	public Long getUserDetailId() {
 		return userDetailId;
@@ -19,28 +21,44 @@ public class UserDetailsTO {
 		this.userDetailId = userDetailId;
 	}
 
-	public String getName() {
-		return name;
+	public String getAddPersonName() {
+		return addPersonName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAddPersonName(String addPersonName) {
+		this.addPersonName = addPersonName;
 	}
 
-	public String getDisplayName() {
-		return displayName;
+	public String getAddDisplayName() {
+		return addDisplayName;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setAddDisplayName(String addDisplayName) {
+		this.addDisplayName = addDisplayName;
 	}
 
-	public String getDescription() {
-		return Description;
+	public String getAddComments() {
+		return addComments;
 	}
 
-	public void setDescription(String description) {
-		Description = description;
+	public void setAddComments(String addComments) {
+		this.addComments = addComments;
+	}
+
+	public String getUniqueSheetId() {
+		return uniqueSheetId;
+	}
+
+	public void setUniqueSheetId(String uniqueSheetId) {
+		this.uniqueSheetId = uniqueSheetId;
+	}
+
+	public String getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(String lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
 	}
 
 }

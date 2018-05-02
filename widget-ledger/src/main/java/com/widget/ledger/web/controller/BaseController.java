@@ -1,51 +1,71 @@
 package com.widget.ledger.web.controller;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.widget.ledger.web.common.util.SecureIdGeneratorService;
 import com.widget.ledger.web.domain.LedgerSheets;
+import com.widget.ledger.web.exceptions.RecordNotFoundException;
 import com.widget.ledger.web.service.ILedgerService;
 import com.widget.ledger.web.to.DisplayTO;
+import com.widget.ledger.web.to.ErrorTO;
 import com.widget.ledger.web.transformer.IGenericTransformer;
 
 public class BaseController {
 
 	@Autowired
-	@Qualifier("ledgerServiceImpl")
-	private ILedgerService ledgerService;
+	@Qualifier("ledgerSheetServiceImpl")
+	public ILedgerService<LedgerSheets> ledgerSheetServiceImpl;
 
 	@Autowired
 	@Qualifier("ledgerSheetTransformerImpl")
-	private IGenericTransformer<DisplayTO, LedgerSheets> ledgerSheetTransformerImpl;
+	public IGenericTransformer<DisplayTO, LedgerSheets> ledgerSheetTransformerImpl;
 
 	/**
 	 * @return
 	 */
-	public ModelAndView onLoadExpenses(final String sheetNm) {
-		final ModelAndView mv = new ModelAndView("expense/createExpense");
-		mv.addObject("user", "Unknown");
-		mv.addObject("displayTO", getSheetDetails(sheetNm));
-		return mv;
-	}
-
-	private DisplayTO getSheetDetails(final String sheetNm) {
-		LedgerSheets ledgerSheet = ledgerService.getLedgerSheetByUniqueId(sheetNm);
-		if (null == ledgerSheet) {
-			ledgerSheet= buildLedgerSheetDetails(sheetNm);
-			//ledgerSheet = ledgerService.saveOrUpdateSheet(ledgerSheet);
+	public ModelAndView onLoadExpenses(final String uniqueID) {
+		final ModelAndView view = new ModelAndView();
+		view.addObject("user", "Unknown");
+		DisplayTO displayTo = new DisplayTO();
+		ErrorTO errorTO = new ErrorTO();
+		try {
+			displayTo = getSheetDetails(uniqueID);
+			view.setViewName("expense/createExpense");
+		} catch (RecordNotFoundException e) {
+			view.setViewName("/welcome");
+			errorTO.setErrMsg(e.getMessage());
+			view.addObject("errorTO", errorTO);
 		}
-		final DisplayTO displayTO = ledgerSheetTransformerImpl.transformEntityToTO(ledgerSheet);
-		return displayTO;
+		view.addObject("displayTO", displayTo);
+		return view;
 	}
 
-	private LedgerSheets buildLedgerSheetDetails(final String sheetName) {
-		LedgerSheets ledgerSheet = new LedgerSheets();
-		ledgerSheet.setLedgerUniqueId(SecureIdGeneratorService.generateUID());
-		ledgerSheet.setSysActionCd("I");
-		ledgerSheet.setSysActionNm("NEW_SHEET");
-		ledgerSheet.setLedgerSheetName(sheetName);
-		return ledgerSheet;
+	private DisplayTO getSheetDetails(final String uniqueID) {
+		final LedgerSheets ledgerSheet = ledgerSheetServiceImpl.findOne(uniqueID);
+		if (ObjectUtils.equals(ledgerSheet, null)) {
+			throw new RecordNotFoundException("No Record Found");
+		}
+		return ledgerSheetTransformerImpl.transformEntityToTO(ledgerSheet);
 	}
+
+	public ModelAndView createNewSheet(final String sheetName) {
+		final DisplayTO to = new DisplayTO();
+		to.setUniqueSheetId(SecureIdGeneratorService.generateUID());
+		to.setSheetName(sheetName);
+		final LedgerSheets ledgerSheets = ledgerSheetTransformerImpl.transformTOtoEntity(to);
+		final LedgerSheets ledgerSheet = ledgerSheetServiceImpl.saveOrUpdate(ledgerSheets);
+		final DisplayTO displayTO = ledgerSheetTransformerImpl.transformEntityToTO(ledgerSheet);
+		return addModelAndView(displayTO);
+	}
+
+	private ModelAndView addModelAndView(final DisplayTO to) {
+		final ModelAndView view = new ModelAndView("expense/createExpense");
+		view.addObject("user", "Unknown");
+		view.addObject("displayTO", to);
+		return view;
+	}
+
 }

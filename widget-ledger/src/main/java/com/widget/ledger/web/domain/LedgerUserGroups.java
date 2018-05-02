@@ -2,14 +2,19 @@ package com.widget.ledger.web.domain;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +31,9 @@ public class LedgerUserGroups {
 
 	@Column(name = "LEDGER_DISPLAY_NAME")
 	private String displayName;
+
+	@Column(name = "LEDGER_USER_COMMENTS")
+	private String ledgerUserCommnets;
 
 	@Column(name = "LEDGER_BALANCED_AMT")
 	private BigDecimal balancedAmt;
@@ -47,7 +55,14 @@ public class LedgerUserGroups {
 
 	@ManyToOne
 	@JoinColumn(name = "LEDGER_SHEETS_ID")
-	private LedgerSheets ledgerSheet;
+	private LedgerSheets userSheet;
+
+	@ManyToMany(mappedBy = "paidFor")
+	private List<LedgerExpenses> paidFor;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	private LedgerExpenses paidBy;
 
 	public int getLedgerUserId() {
 		return ledgerUserId;
@@ -61,7 +76,7 @@ public class LedgerUserGroups {
 		return userName;
 	}
 
-	public void setUserName(String userName) {
+	public void setUserName(final String userName) {
 		this.userName = userName;
 	}
 
@@ -69,7 +84,7 @@ public class LedgerUserGroups {
 		return displayName;
 	}
 
-	public void setDisplayName(String displayName) {
+	public void setDisplayName(final String displayName) {
 		this.displayName = displayName;
 	}
 
@@ -121,12 +136,36 @@ public class LedgerUserGroups {
 		this.lastUpdateTs = lastUpdateTs;
 	}
 
-	public LedgerSheets getLedgerSheet() {
-		return ledgerSheet;
+	public LedgerSheets getUserSheet() {
+		return userSheet;
 	}
 
-	public void setLedgerSheet(LedgerSheets ledgerSheet) {
-		this.ledgerSheet = ledgerSheet;
+	public void setUserSheet(LedgerSheets userSheet) {
+		this.userSheet = userSheet;
+	}
+
+	public String getLedgerUserCommnets() {
+		return ledgerUserCommnets;
+	}
+
+	public void setLedgerUserCommnets(final String ledgerUserCommnets) {
+		this.ledgerUserCommnets = ledgerUserCommnets;
+	}
+
+	public List<LedgerExpenses> getPaidFor() {
+		return paidFor;
+	}
+
+	public void setPaidFor(final List<LedgerExpenses> paidFor) {
+		this.paidFor = paidFor;
+	}
+
+	public LedgerExpenses getPaidBy() {
+		return paidBy;
+	}
+
+	public void setPaidBy(final LedgerExpenses paidBy) {
+		this.paidBy = paidBy;
 	}
 
 }

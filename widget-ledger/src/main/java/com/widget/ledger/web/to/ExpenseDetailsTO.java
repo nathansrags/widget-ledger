@@ -1,15 +1,16 @@
 package com.widget.ledger.web.to;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ExpenseDetailsTO {
 
 	private Long expenseDetailId;
 	private String expenseDate;
 	private String expenseDesc;
-	private String paidBy;
+	private UserDetailsTO paidBy;
 	private BigDecimal paidAmt;
-	private String paidFor;
+	private List<UserDetailsTO> paidFor;
 
 	public Long getExpenseDetailId() {
 		return expenseDetailId;
@@ -35,11 +36,11 @@ public class ExpenseDetailsTO {
 		this.expenseDesc = expenseDesc;
 	}
 
-	public String getPaidBy() {
+	public UserDetailsTO getPaidBy() {
 		return paidBy;
 	}
 
-	public void setPaidBy(String paidBy) {
+	public void setPaidBy(UserDetailsTO paidBy) {
 		this.paidBy = paidBy;
 	}
 
@@ -51,11 +52,11 @@ public class ExpenseDetailsTO {
 		this.paidAmt = paidAmt;
 	}
 
-	public String getPaidFor() {
+	public List<UserDetailsTO> getPaidFor() {
 		return paidFor;
 	}
 
-	public void setPaidFor(String paidFor) {
+	public void setPaidFor(List<UserDetailsTO> paidFor) {
 		this.paidFor = paidFor;
 	}
 

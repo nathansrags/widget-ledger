@@ -52,10 +52,10 @@ public class LedgerSheets implements Serializable {
 	@Column(name = "LAST_UPDATE_TS")
 	private Timestamp lastUpdateTs;
 
-	@OneToMany(mappedBy = "ledgerSheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "userSheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<LedgerUserGroups> relatedUsers = new ArrayList<LedgerUserGroups>();
 
-	@OneToMany(mappedBy = "ledgerSheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "expenseSheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<LedgerExpenses> relatedExpenses = new ArrayList<LedgerExpenses>();
 
 	public Long getLedgerSheetId() {

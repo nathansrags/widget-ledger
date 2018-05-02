@@ -1,17 +1,25 @@
 package com.widget.ledger.web.service;
 
-import com.widget.ledger.web.domain.LedgerSheets;
+import java.util.List;
 
-public interface ILedgerService {
+public interface ILedgerService<E> {
 
-	LedgerSheets getLedgerSheetByUniqueId(final String uniqueId);
+	E find(E entity);
 
-	LedgerSheets saveOrUpdateSheet(final LedgerSheets ledgerSheets);
+	List<E> findAll();
 
-	void updateUserGroup();
+	E findById(long id);
 
-	void saveLedgerExpense();
+	E findOne(String column);
 
-	void saveUserGroup();
+	E saveOrUpdate(E entity);
+
+	List<E> saveAll(List<E> entity);
+
+	void delete(E entity);
+	
+	List<E> findByCol(String column);
+	
+	List<E> findByIds(List<Integer> ids);
 
 }

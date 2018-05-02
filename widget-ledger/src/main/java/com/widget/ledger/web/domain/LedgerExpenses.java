@@ -2,16 +2,23 @@ package com.widget.ledger.web.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -34,12 +41,21 @@ public class LedgerExpenses implements Serializable {
 
 	@Column(name = "PAID_AMOUNT")
 	private BigDecimal paidAmount;
+	
+	@Column(name="PAID_DATE")
+	private Date paidDate;
 
-	@Column(name = "PAID_BY")
-	private String paidBy;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "paidBy", cascade = CascadeType.ALL)
+	@JoinColumn(name="ledgerUserId")
+	private LedgerUserGroups paidBy;
 
-	@Column(name = "PAID_FOR")
-	private String paidFor;
+	@ManyToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "LEDGER_USER_PAID_FOR", 
+        joinColumns = { @JoinColumn(name = "EXPENSE_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "LEDGER_USER_ID") }
+    )
+	private List<LedgerUserGroups> paidFor;
 
 	@Column(name = "SYS_START_TS")
 	private Timestamp sysStartTs;
@@ -58,7 +74,7 @@ public class LedgerExpenses implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "LEDGER_SHEETS_ID")
-	private LedgerSheets ledgerSheet;
+	private LedgerSheets expenseSheet;
 
 	public int getExpenseId() {
 		return expenseId;
@@ -76,6 +92,14 @@ public class LedgerExpenses implements Serializable {
 		this.expenseDesc = expenseDesc;
 	}
 
+	public Date getPaidDate() {
+		return paidDate;
+	}
+
+	public void setPaidDate(Date paidDate) {
+		this.paidDate = paidDate;
+	}
+	
 	public BigDecimal getPaidAmount() {
 		return paidAmount;
 	}
@@ -84,19 +108,19 @@ public class LedgerExpenses implements Serializable {
 		this.paidAmount = paidAmount;
 	}
 
-	public String getPaidBy() {
+	public LedgerUserGroups getPaidBy() {
 		return paidBy;
 	}
 
-	public void setPaidBy(String paidBy) {
+	public void setPaidBy(LedgerUserGroups paidBy) {
 		this.paidBy = paidBy;
 	}
 
-	public String getPaidFor() {
+	public List<LedgerUserGroups> getPaidFor() {
 		return paidFor;
 	}
 
-	public void setPaidFor(String paidFor) {
+	public void setPaidFor(List<LedgerUserGroups> paidFor) {
 		this.paidFor = paidFor;
 	}
 
@@ -140,12 +164,14 @@ public class LedgerExpenses implements Serializable {
 		this.lastUpdateTs = lastUpdateTs;
 	}
 
-	public LedgerSheets getLedgerSheet() {
-		return ledgerSheet;
+	public LedgerSheets getExpenseSheet() {
+		return expenseSheet;
 	}
 
-	public void setLedgerSheet(LedgerSheets ledgerSheet) {
-		this.ledgerSheet = ledgerSheet;
+	public void setExpenseSheet(final LedgerSheets expenseSheet) {
+		this.expenseSheet = expenseSheet;
 	}
+
+	
 
 }

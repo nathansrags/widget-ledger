@@ -3,70 +3,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <html lang="en">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta charset="utf-8" />
-		<title>Widget Ledger - Online Ledger Tool</title>
-
-		<meta name="description" content="Common UI Features &amp; Elements" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-		<!-- bootstrap & fontawesome -->
-		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="assets/font-awesome/4.5.0/css/font-awesome.min.css" />
-
-		<!-- page specific plugin styles -->
-		<link rel="stylesheet" href="assets/css/bootstrap-datepicker3.min.css" />
-		<link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
-		<link rel="stylesheet" href="assets/css/jquery.gritter.min.css" />
-
-		<!-- text fonts -->
-		<link rel="stylesheet" href="assets/css/fonts.googleapis.com.css" />
-
-		<!-- ace styles -->
-		<link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
-
-		<!--[if lte IE 9]>
-			<link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
-		<![endif]-->
-		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
-		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
-
-		<!--[if lte IE 9]>
-		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
-		<![endif]-->
-
-		<!-- inline styles related to this page -->
-		<style>
-			/* some elements used in demo only */
-			.spinner-preview {
-				width: 100px;
-				height: 100px;
-				text-align: center;
-				margin-top: 60px;
-			}
-			
-			.dropdown-preview {
-				margin: 0 5px;
-				display: inline-block;
-			}
-			.dropdown-preview  > .dropdown-menu {
-				display: block;
-				position: static;
-				margin-bottom: 5px;
-			}
-		</style>
-
-		<!-- ace settings handler -->
-		<script src="assets/js/ace-extra.min.js"></script>
-
-		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-
-		<!--[if lte IE 8]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
+		<jsp:include page="../common/includes.jsp" />
 	</head>
-
 	<body class="no-skin">
 		<jsp:include page="../authHeader.jsp" />
 		<div class="main-container ace-save-state" id="main-container">
@@ -78,6 +16,7 @@
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs" style="padding-left: 20px">
 						<a href="#" id="sheetNameTxt">${displayTO.sheetName }</a>
 						<input type="text"  id="sheetName" class="hidden" style="height: 20px" value="${displayTO.sheetName}"/>
+						<input type="text"  id="uniqueSheetId" class="hidden" style="height: 20px" value="${displayTO.uniqueSheetId}"/>
 						<!-- <form class="form-search">
 							<input type="text"  id="sheetName" autocomplete="off" />
 						</form> -->
@@ -136,59 +75,41 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
-								<div class="row">
-										<div class="tabbable">
-											<ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="tabs">
-												<li class="active"><a data-toggle="tab" href="#groups">
-													<i class="blue ace-icon fa fa-user bigger-110"></i>
-													<i class="hidden-xs">Create Group</i></a>
-												</li>
-												<li><a data-toggle="tab" href="#expenses">
-													<i class="green ace-icon fa fa-database bigger-110 orange"></i>
-													<i class="hidden-xs">Enter Expense</i></a>
-												</li>
-												<li><a data-toggle="tab" href="#payments">
-													<i class="red ace-icon fa fa-credit-card bigger-130"></i>
-													<i class="hidden-xs">Compute Payment</i></a>
-												</li>
-											</ul>
-											<div class="tab-content">
-												<div id="groups" class="tab-pane in active">
-													<jsp:include page="userTable.jsp"/>
-													<!-- <table id="user-group"></table>
-													<table id="user-pager"></table> -->
-												</div>
-												<div id="expenses" class="tab-pane">
-													<jsp:include page="expenseTable.jsp"/>
-												</div>
-												<div id="payments" class="tab-pane">
-													<jsp:include page="balanceTable.jsp"/>
-												</div>
-											</div>
-										</div>
-										
-									</div>
 							<div class="row">
-								<a href="#" id="addExpense"
-									class="btn btn-white btn-info btn-bold"> <i
-									class="ace-icon glyphicon-plus bigger-100"></i> Add Person[+]
-								</a> <a href="#" id="deleteSelected"
-									class="btn btn-white btn-info btn-bold"> <i
-									class="ace-icon fa fa-trash-o bigger-100"></i> Delete Selected
-								</a> <a href="#" id="enterExpense"
-									class="btn btn-white btn-info btn-bold"> <i
-									class="ace-icon fa fa-pencil-square-o bigger-100"></i> Enter
-									Expenses
-								</a>
-								<div id="dialog-message" class="hide">
-									<p>This is the default dialog which is useful for
-										displaying information. The dialog window can be moved,
-										resized and closed with the 'x' icon.</p>
-									<p>
-										Currently using <b>36% of your storage space</b>.
-									</p>
+								<div class="tabbable">
+									<ul
+										class="nav nav-tabs padding-12 tab-color-blue background-blue"
+										id="tabs">
+										<li class="active"><a data-toggle="tab" href="#groups">
+												<i class="blue ace-icon fa fa-user bigger-110"></i> <i
+												class="hidden-xs">Create Group</i>
+										</a></li>
+										<li><a data-toggle="tab" href="#expenses"> <i
+												class="green ace-icon fa fa-database bigger-110 orange"></i>
+												<i class="hidden-xs">Enter Expense</i></a></li>
+										<li><a data-toggle="tab" href="#payments"> <i
+												class="red ace-icon fa fa-credit-card bigger-130"></i> <i
+												class="hidden-xs">Compute Payment</i></a></li>
+									</ul>
+									<div class="tab-content">
+										<div id="groups" class="tab-pane in active">
+											<table id="user-group"></table>
+											<table id="user-group-pager"></table>
+											<jsp:include page="userTable.jsp" />
+										</div>
+										<div id="expenses" class="tab-pane">
+											<table id="expense-jqTable"></table>
+											<table id="expense-jqTable-pager"></table>
+											<jsp:include page="expenseTable.jsp" />
+										</div>
+										<div id="payments" class="tab-pane">
+											<table id="payments-jqTable"></table>
+											<jsp:include page="balanceTable.jsp" />
+										</div>
+									</div>
 								</div>
-							</div><!-- /.row -->
+							</div>
+							<!-- /.row -->
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
@@ -202,28 +123,8 @@
 				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
 			</a>
 		</div><!-- /.main-container -->
-
-		<!-- basic scripts -->
-		<!--[if !IE]> -->
-		<script src="assets/js/jquery-2.1.4.min.js"></script>
-		<script type="text/javascript">
-			if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-		</script>
-		<script src="assets/js/bootstrap.min.js"></script>
-		<!-- page specific plugin scripts -->
-		<script src="assets/js/jquery-ui.custom.min.js"></script>
-		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
-		<!-- <script src="assets/js/bootbox.js"></script> -->
-		<script src="assets/js/spin.js"></script>
-		<!-- <script src="assets/js/jquery.jqGrid.min.js"></script> -->
-		<script src="assets/js/bootstrap-datepicker.min.js"></script>
-		<script src="assets/js/grid.locale-en.js"></script>
-
-		<!-- ace scripts -->
-		<script src="assets/js/ace-elements.min.js"></script>
-		<script src="assets/js/ace.min.js"></script>
-
-		<!-- inline scripts related to this page -->
+		<jsp:include page="../common/scriptImports.jsp" />
+		
 		<script type="text/javascript">
 			jQuery(function($) {
 				$('#tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -307,36 +208,16 @@
 		$(window).load(function() {
 		    $(".message-loading-overlay").fadeOut("slow");
 		})
-		$(document).ready(function(){
-			$( "#addExpense" ).on('click', function(e) {
-				e.preventDefault();
-				/* $( "#dialog-message" ).modal('show'); */
-				$( "#dialog-message" ).dialog({
-					resizable: false,
-					width: '320',
-					modal: true,
-					title: "<div class='widget-header'><h4 class='smaller'><i class='ace-icon fa fa-exclamation-triangle red'></i> Empty the recycle bin?</h4></div>",
-					title_html: true,
-					buttons: [
-						{
-							html: "<i class='ace-icon fa fa-trash-o bigger-110'></i>&nbsp; Delete all items",
-							"class" : "btn btn-danger btn-minier",
-							click: function() {
-								$( this ).dialog( "close" );
-							}
-						}
-						,
-						{
-							html: "<i class='ace-icon fa fa-times bigger-110'></i>&nbsp; Cancel",
-							"class" : "btn btn-minier",
-							click: function() {
-								$( this ).dialog( "close" );
-							}
-						}
-					]
-				});
-			});
-		})
+		//override dialog's title function to allow for HTML titles
+		$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+			_title: function(title) {
+				var $title = this.options.title || '&nbsp;'
+				if( ("title_html" in this.options) && this.options.title_html == true )
+					title.html($title);
+				else title.text($title);
+			}
+		}));
+		
 		</script>
 	</body>
 </html>

@@ -13,6 +13,7 @@
 		<org.slf4j-version>1.7.5</org.slf4j-version>
 		<hibernate.version>4.3.5.Final</hibernate.version>
 		<apachetiles.version>3.0.5</apachetiles.version>
+		<jackson.version>2.6.3</jackson.version>
 	</properties>
   <dependencies>
 		<!-- activation -->
@@ -231,7 +232,17 @@
 			<artifactId>querydsl-jpa</artifactId>
 			<version>4.1.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 
 	</dependencies>
 	<build>

@@ -1,6 +1,5 @@
 package com.widget.ledger.web.transformer.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class LedgerSheetTransformerImpl implements IGenericTransformer<DisplayTO
 
 	@Autowired
 	@Qualifier("ledgerUserGroupTransformerImpl")
-	private IGenericTransformer<List<UserDetailsTO>, List<LedgerUserGroups>> userGroupTransformerImpl;
+	private IGenericTransformer<UserDetailsTO, LedgerUserGroups> userGroupTransformerImpl;
 
 	@Override
 	public LedgerSheets transformTOtoEntityForUpdate(final DisplayTO to, final LedgerSheets entity) {
@@ -27,8 +26,11 @@ public class LedgerSheetTransformerImpl implements IGenericTransformer<DisplayTO
 
 	@Override
 	public LedgerSheets transformTOtoEntity(final DisplayTO to) {
-		// TODO Auto-generated method stub
-		return null;
+		LedgerSheets sheets = new LedgerSheets();
+		sheets.setLedgerUniqueId(to.getUniqueSheetId());
+		sheets.setLedgerSheetName(to.getSheetName());
+		updateAuditColumns(sheets);
+		return sheets;
 	}
 
 	@Override
@@ -39,6 +41,38 @@ public class LedgerSheetTransformerImpl implements IGenericTransformer<DisplayTO
 		List<UserDetailsTO> userList = userGroupTransformerImpl.transformEntityToTO(entity.getRelatedUsers());
 		displayTO.setUserDetailsTO(userList);
 		return displayTO;
+	}
+
+	@Override
+	public List<LedgerSheets> transformTOtoEntityForUpdate(List<DisplayTO> to, List<LedgerSheets> entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<LedgerSheets> transformTOtoEntity(List<DisplayTO> to) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DisplayTO> transformEntityToTO(List<LedgerSheets> entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DisplayTO transformListEntityToTO(List<LedgerSheets> entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LedgerSheets updateAuditColumns(final LedgerSheets ledgerSheets) {
+		ledgerSheets.setSysActionCd("I");
+		ledgerSheets.setSysActionId("SYSTEM");
+		ledgerSheets.setSysActionNm("SYSTEM");
+		return ledgerSheets;
 	}
 
 }

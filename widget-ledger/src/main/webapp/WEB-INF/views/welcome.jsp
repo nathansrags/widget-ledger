@@ -72,11 +72,16 @@
 			<div class="main-content">
 				<div class="main-content-inner">
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+					<c:if test="${errorTO.errMsg  != null}">
+											<div class="alert alert-danger">
+												<p>No Sheet found.</p>
+											</div>
+					</c:if>
 						<div class="nav-search" id="nav-search">
-							<form class="form-search" name="createExpense" method="POST" action="<c:url value='createExpense' />">Track Sheet
+							<form class="form-search" name="createExpense" method="POST" action="<c:url value='retriveSheet' />">Track Sheet
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" name="sheetName" id="sheetName" autocomplete="off" value="BX4NWXYGHYRF"/>
+									<input type="text" placeholder="Search ..." class="nav-search-input" name="uniqueSheetId" id="uniqueSheetId" autocomplete="off" value="ATK90374O1DJ"/>
 									<i class="ace-icon fa fa-search nav-search-icon"></i>
 								</span>
 							</form>
