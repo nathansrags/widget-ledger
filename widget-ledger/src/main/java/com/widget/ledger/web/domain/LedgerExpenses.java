@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -34,7 +35,7 @@ public class LedgerExpenses implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "EXPENSE_ID")
-	private int expenseId;
+	private Long expenseId;
 
 	@Column(name = "EXPENSE_DESC")
 	private String expenseDesc;
@@ -45,17 +46,17 @@ public class LedgerExpenses implements Serializable {
 	@Column(name="PAID_DATE")
 	private Date paidDate;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "paidBy", cascade = CascadeType.ALL)
-	@JoinColumn(name="ledgerUserId")
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="PAID_BY")
 	private LedgerUserGroups paidBy;
 
-	@ManyToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL })
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "LEDGER_USER_PAID_FOR", 
-        joinColumns = { @JoinColumn(name = "EXPENSE_id") }, 
+        joinColumns = { @JoinColumn(name = "EXPENSE_ID") }, 
         inverseJoinColumns = { @JoinColumn(name = "LEDGER_USER_ID") }
     )
-	private List<LedgerUserGroups> paidFor;
+	private Set<LedgerUserGroups> paidFor;
 
 	@Column(name = "SYS_START_TS")
 	private Timestamp sysStartTs;
@@ -76,11 +77,11 @@ public class LedgerExpenses implements Serializable {
 	@JoinColumn(name = "LEDGER_SHEETS_ID")
 	private LedgerSheets expenseSheet;
 
-	public int getExpenseId() {
+	public Long getExpenseId() {
 		return expenseId;
 	}
 
-	public void setExpenseId(int expenseId) {
+	public void setExpenseId(Long expenseId) {
 		this.expenseId = expenseId;
 	}
 
@@ -108,19 +109,20 @@ public class LedgerExpenses implements Serializable {
 		this.paidAmount = paidAmount;
 	}
 
+	
 	public LedgerUserGroups getPaidBy() {
-		return paidBy;
+		return this.paidBy;
 	}
 
 	public void setPaidBy(LedgerUserGroups paidBy) {
 		this.paidBy = paidBy;
 	}
 
-	public List<LedgerUserGroups> getPaidFor() {
+	public Set<LedgerUserGroups> getPaidFor() {
 		return paidFor;
 	}
 
-	public void setPaidFor(List<LedgerUserGroups> paidFor) {
+	public void setPaidFor(Set<LedgerUserGroups> paidFor) {
 		this.paidFor = paidFor;
 	}
 

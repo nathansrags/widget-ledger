@@ -1,11 +1,15 @@
 package com.widget.ledger.web.controller;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.widget.ledger.web.common.util.SecureIdGeneratorService;
+import com.widget.ledger.web.domain.LedgerExpenses;
 import com.widget.ledger.web.domain.LedgerSheets;
 import com.widget.ledger.web.exceptions.RecordNotFoundException;
 import com.widget.ledger.web.service.ILedgerService;
@@ -66,6 +70,27 @@ public class BaseController {
 		view.addObject("user", "Unknown");
 		view.addObject("displayTO", to);
 		return view;
+	}
+	
+	public void mapBreadCrums(final LedgerSheets ledgerSheet, final DisplayTO uiTO) {
+		uiTO.setTotalUsers(String.valueOf(ledgerSheet.getRelatedUsers().size()));
+		uiTO.setCountExpenses(String.valueOf(ledgerSheet.getRelatedExpenses().size()));
+		getTotalExpenses(ledgerSheet.getRelatedExpenses(), uiTO);
+		uiTO.setCreatedOn(ledgerSheet.getSysStartTs().toString());
+		uiTO.setLastUpdated(ledgerSheet.getLastUpdateTs().toString());
+	}
+	
+	/**
+	 * @param ledgerExpenses
+	 * @param displayTo
+	 * @return
+	 */
+	private void getTotalExpenses(final List<LedgerExpenses> ledgerExpenses, final DisplayTO displayTo) {
+		BigDecimal totalExp = BigDecimal.ZERO;
+		for (final LedgerExpenses ledgerExpense : ledgerExpenses) {
+			totalExp = totalExp.add(ledgerExpense.getPaidAmount());
+		}
+		displayTo.setTotalExpenses(totalExp.toEngineeringString());
 	}
 
 }

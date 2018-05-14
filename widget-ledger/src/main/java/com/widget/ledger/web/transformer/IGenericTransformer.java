@@ -1,5 +1,6 @@
 package com.widget.ledger.web.transformer;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IGenericTransformer<T, E> {

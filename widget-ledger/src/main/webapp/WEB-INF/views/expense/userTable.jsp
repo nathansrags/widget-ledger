@@ -105,7 +105,7 @@ function addUser() {
 	};
 	//"${_csrf.parameterName}" //: "${_csrf.token}",
 	
-	$.postJSONData(url, userDetailsTO, refreshUserTable, '', 'preLoadingIcon');
+	$.postJSONData(url, userDetailsTO, refreshUserTable, addUserFailure, 'preLoadingIcon');
 }
 
 function hideLoading(){
@@ -126,11 +126,23 @@ function fetchUserTable(){
 			"addComments": '',
 			"uniqueSheetId" : uniqueSheetId
 	};
-	$.postJSONData(url, userDetailsTO , refreshUserTable, '', 'preLoadingIcon');
+	$.postJSONData(url, userDetailsTO , refreshUserTable, addUserFailure, 'preLoadingIcon');
 }
 
-
+function addUserFailure(jqXHR){
+	$('#errorDiv').removeClass('hide').append(jqXHR.responseText);
+	$('#errorDiv').fadeOut();
+	hideLoading();
+}
+function fillBreadCrumbs(data){
+	$('#breadCrumbsPerson').html('').html(data.totalUsers +' Persons');
+	$('#breadCrumbsExpense').html('').html(data.countExpenses +' Expenses');
+	$('#breadCrumbsTotal').html('').html('Total Spent: ' + data.totalExpenses);
+	$('#breadCrumbsCreatedOn').html('').html('Created On : ' +data.createdOn);
+	$('#breadCrumbsUpdatedOn').html('').html('Last Updated on : ' +data.lastUpdated);
+}
 function refreshUserTable(data){
+	fillBreadCrumbs(data);
 	var userData = data.userDetailsTO;
 	if(userData == '' || userData == null || userData.length == 0){
 		$('#simple-table').removeClass('hide');
@@ -167,6 +179,7 @@ jQuery(grid_selector).jqGrid({
 	data: userData,
 	datatype: "local",
 	height: 250,
+	rownumbers: true,
 	colNames:['Person Name','Display Name','Description Comments','<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i> Last Updated', 'Actions'],
 	colModel:[
 		/* {name:'id',index:'id', width:40, sorttype:"int", editable: false}, */
@@ -426,6 +439,7 @@ function updatePagerIcons(table) {
 		
 		if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 	})
+	fetchExpenseTable();
 }
 
 function enableTooltips(table) {

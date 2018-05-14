@@ -15,6 +15,19 @@ public class PaymentDetailsTO {
 	private String ownedFrom;
 	private BigDecimal balaneAmt;
 
+	public PaymentDetailsTO() {
+	}
+
+	public PaymentDetailsTO(final String name, final BigDecimal expense, final BigDecimal totalSpent,
+			final String ownedTo, final String ownedFrom, final BigDecimal balaneAmt) {
+		this.name = name;
+		this.expense = expense;
+		this.totalSpent = totalSpent;
+		this.ownedTo = ownedTo;
+		this.ownedFrom = ownedFrom;
+		this.balaneAmt = balaneAmt;
+	}
+
 	public String getName() {
 		return name;
 	}

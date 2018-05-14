@@ -2,6 +2,7 @@ package com.widget.ledger.web.transformer.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class LedgerExpenseTranformerImpl implements IGenericTransformer<ExpenseD
 			e.printStackTrace();
 		}
 		expense.setPaidBy(ledgerUserGroupTransformerImpl.transformTOtoEntity(to.getPaidBy()));
-		expense.setPaidFor(ledgerUserGroupTransformerImpl.transformTOtoEntity(to.getPaidFor()));
+		expense.setPaidFor(
+				new HashSet<LedgerUserGroups>(ledgerUserGroupTransformerImpl.transformTOtoEntity(to.getPaidFor())));
 		updateAuditColumns(expense);
 		return expense;
 	}
@@ -71,7 +73,8 @@ public class LedgerExpenseTranformerImpl implements IGenericTransformer<ExpenseD
 			detailsTO.setPaidAmt(expense.getPaidAmount());
 			detailsTO.setExpenseDesc(expense.getExpenseDesc());
 			detailsTO.setPaidBy(ledgerUserGroupTransformerImpl.transformEntityToTO(expense.getPaidBy()));
-			detailsTO.setPaidFor(ledgerUserGroupTransformerImpl.transformEntityToTO(expense.getPaidFor()));
+			detailsTO.setPaidFor(ledgerUserGroupTransformerImpl
+					.transformEntityToTO(new ArrayList<LedgerUserGroups>(expense.getPaidFor())));
 			expenseDetailsTO.add(detailsTO);
 		}
 		return expenseDetailsTO;

@@ -111,18 +111,18 @@ public class SplitUpTester {
 
 	private static void addExpense(final List<ExpenseList> expenseList) {
 		final List<BigDecimal> amounts = new ArrayList<BigDecimal>();
-		amounts.add(new BigDecimal("110"));
-		amounts.add(new BigDecimal("00"));
-		amounts.add(new BigDecimal("0"));
-		amounts.add(new BigDecimal("0"));
-		amounts.add(new BigDecimal("10"));
-		String whoPaid[] = { UserList.GOPI.getUser(), UserList.SIVA.getUser(), UserList.BALA.getUser(),
-				UserList.MURUGESH.getUser(),UserList.PUSHPARAJ.getUser() };
+		amounts.add(new BigDecimal("200"));
+		amounts.add(new BigDecimal("200"));
+		amounts.add(new BigDecimal("100"));
+		/*amounts.add(new BigDecimal("0"));
+		amounts.add(new BigDecimal("10"));*/
+		String whoPaid[] = { UserList.GOPI.getUser(), UserList.SIVA.getUser()/*, UserList.BALA.getUser(),
+				UserList.MURUGESH.getUser(),UserList.PUSHPARAJ.getUser() */};
 		int i = 0;
 		for (BigDecimal amount : amounts) {
 			ExpenseList expense = new ExpenseList();
 			expense.setAmount(amount);
-			expense.setWhoPaid(whoPaid[i]);
+			expense.setWhoPaid(UserList.GOPI.getUser());
 			expense.setForWhom(Arrays.asList(UserList.values()));
 			expenseList.add(expense);
 			i++;

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.api.client.util.Lists;
 import com.widget.ledger.web.domain.LedgerExpenses;
@@ -19,8 +21,7 @@ public class LedgerExpenseServiceImpl implements ILedgerService<LedgerExpenses> 
 
 	@Override
 	public LedgerExpenses find(final LedgerExpenses entity) {
-		final Integer id = entity.getExpenseId();
-		return expenseRepository.findOne(LedgerExpensesPredicate.byID(id));
+		return expenseRepository.findOne(LedgerExpensesPredicate.byID(entity.getExpenseId()));
 	}
 
 	@Override
@@ -53,6 +54,7 @@ public class LedgerExpenseServiceImpl implements ILedgerService<LedgerExpenses> 
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public LedgerExpenses saveOrUpdate(final LedgerExpenses entity) {
 		return expenseRepository.save(entity);
 	}

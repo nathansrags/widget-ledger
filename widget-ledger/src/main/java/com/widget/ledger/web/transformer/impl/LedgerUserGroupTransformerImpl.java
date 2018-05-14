@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import com.widget.ledger.web.domain.LedgerSheets;
 import com.widget.ledger.web.domain.LedgerUserGroups;
@@ -23,6 +24,10 @@ public class LedgerUserGroupTransformerImpl implements IGenericTransformer<UserD
 	@Autowired
 	@Qualifier("ledgerSheetServiceImpl")
 	private ILedgerService<LedgerSheets> ledgerSheetServiceImpl;
+	
+	@Autowired
+	@Qualifier("ledgerUserGroupServiceImpl")
+	private ILedgerService<LedgerUserGroups> ledgerUserGroupServiceImpl;
 
 	@Override
 	public List<LedgerUserGroups> transformTOtoEntityForUpdate(List<UserDetailsTO> to, List<LedgerUserGroups> entity) {
@@ -31,11 +36,31 @@ public class LedgerUserGroupTransformerImpl implements IGenericTransformer<UserD
 	}
 
 	@Override
-	public List<LedgerUserGroups> transformTOtoEntity(List<UserDetailsTO> to) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<LedgerUserGroups> transformTOtoEntity(List<UserDetailsTO> toList) {
+		final List<LedgerUserGroups> userGroups = new ArrayList<LedgerUserGroups>();
+		for (final UserDetailsTO to : toList) {
+			userGroups.add(transformTOtoEntity(to));
+		}
+		return userGroups;
 	}
-
+	
+	@Override
+	public LedgerUserGroups transformTOtoEntity(final UserDetailsTO to) {
+		LedgerUserGroups userGroups = new LedgerUserGroups();
+		if (ObjectUtils.isEmpty(to.getUserDetailId())) {
+			userGroups = new LedgerUserGroups();
+			userGroups.setDisplayName(to.getAddDisplayName());
+			userGroups.setLedgerUserCommnets(to.getAddComments());
+			userGroups.setUserName(to.getAddPersonName());
+			final LedgerSheets refSheet = ledgerSheetServiceImpl.findOne(to.getUniqueSheetId());
+			userGroups.setUserSheet(refSheet);
+			updateAuditColumns(userGroups);
+		} else {
+			userGroups = ledgerUserGroupServiceImpl.findById(to.getUserDetailId());
+		}
+		return userGroups;
+	}
+	
 	@Override
 	public List<UserDetailsTO> transformEntityToTO(List<LedgerUserGroups> entity) {
 		final List<UserDetailsTO> userDetails = new ArrayList<UserDetailsTO>();
@@ -64,21 +89,15 @@ public class LedgerUserGroupTransformerImpl implements IGenericTransformer<UserD
 
 	@Override
 	public UserDetailsTO transformEntityToTO(LedgerUserGroups entity) {
-		// TODO Auto-generated method stub
-		return null;
+		UserDetailsTO userDetailsTO =new UserDetailsTO();
+		userDetailsTO.setUniqueSheetId(entity.getUserSheet().getLedgerUniqueId());
+		userDetailsTO.setAddDisplayName(entity.getDisplayName());
+		userDetailsTO.setAddComments(entity.getLedgerUserCommnets());
+		userDetailsTO.setAddPersonName(entity.getUserName());
+		userDetailsTO.setUserDetailId(entity.getLedgerUserId());
+		return userDetailsTO;
 	}
 
-	@Override
-	public LedgerUserGroups transformTOtoEntity(final UserDetailsTO to) {
-		LedgerUserGroups userGroups = new LedgerUserGroups();
-		userGroups.setDisplayName(to.getAddDisplayName());
-		userGroups.setUserName(to.getAddPersonName());
-		userGroups.setLedgerUserCommnets(to.getAddComments());
-		final LedgerSheets refSheet = ledgerSheetServiceImpl.findOne(to.getUniqueSheetId());
-		userGroups.setUserSheet(refSheet);
-		updateAuditColumns(userGroups);
-		return userGroups;
-	}
 
 	@Override
 	public UserDetailsTO transformListEntityToTO(List<LedgerUserGroups> entity) {

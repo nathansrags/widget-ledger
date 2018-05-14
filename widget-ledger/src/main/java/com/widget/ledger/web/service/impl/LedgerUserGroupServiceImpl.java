@@ -38,8 +38,8 @@ public class LedgerUserGroupServiceImpl implements ILedgerService<LedgerUserGrou
 
 	@Override
 	public LedgerUserGroups find(final LedgerUserGroups entity) {
-		// TODO Auto-generated method stub
-		return null;
+		return ledgerUserGroupRepository.findOne(LedgerUserGroupsPredicate
+				.uniqueUser(entity.getUserSheet().getLedgerUniqueId(), entity.getDisplayName()));
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class LedgerUserGroupServiceImpl implements ILedgerService<LedgerUserGrou
 	public List<LedgerUserGroups> findAll() {
 		return ledgerUserGroupRepository.findAll();
 	}
-	
+
 	@Override
 	public List<LedgerUserGroups> findByIds(List<Integer> ids) {
 		return ledgerUserGroupRepository.findAll();

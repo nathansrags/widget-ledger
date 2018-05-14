@@ -1,5 +1,5 @@
 <jsp:include page="../common/scriptImports.jsp" />
-<table id="simple-table-expense" class="table  table-bordered table-hover hide">
+<table id="simple-table-expense" class="table  table-bordered table-hover">
 	<thead>
 		<tr>
 			<th class="center"><label class="pos-rel"> <input
@@ -39,32 +39,41 @@
 			value="${_csrf.token}" id="token" />
 		<table>
 			<tr>
-				<td>Amount:</td>
-				<td><input type="text" name="expenseAmount"
-					id="expenseAmount" value="200.00"/></td>
+				<td class="col-md-4">Amount:</td>
+				<td><div class="input-group">
+					<span class="input-group-addon">$</span>
+						<input type="text" name="expenseAmount"
+					id="expenseAmount" class="form-control" placeholder="Expenses"/>
+					</div>
+				</td>
 			</tr>
 			<tr><td colspan="2"><div class="space-6"></div></td></tr>
 			<tr>
-				<td>Date:</td>
-				<td><input type="text" name="expenseDate" id="expenseDate"
-					class="date-picker" data-date-format="mm-dd-yyyy" /><i
-					class="fa fa-calendar bigger-110"></i></td>
+				<td class="col-md-4">Date:</td>
+				<td>
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-calendar bigger-110"></i>
+					</span>
+					<input type="text" name="expenseDate" id="expenseDate" class="date-picker" data-date-format="mm-dd-yyyy" />
+				</div>
+				</td>
 			</tr>
 			<tr><td colspan="2"><div class="space-6"></div></td></tr>
 			<tr>
-				<td>Description Name:</td>
+				<td class="col-md-4">Description :</td>
 				<td><input type="text" name="expenseDescription" class="col-xs-12" id="expenseDescription" value="Patel Bros"/></td>
 			</tr>
 			<tr><td colspan="2"><div class="space-6"></div></td></tr>
 			<tr>
-				<td>Who Paid?:</td>
+				<td class="col-md-4">Who Paid?:</td>
 				<td>
 					<div id="paidByGroup" ></div>
 				</td>
 			</tr>
 			<tr><td colspan="2"><div class="space-6"></div></td></tr>
 			<tr>
-				<td>Paid For?: </td>
+				<td class="col-md-4">Paid For?: </td>
 				<td><div id="paidForGroup" name="paidForGroup">
 						
 				</div></td>
@@ -72,7 +81,7 @@
 			<tr><td colspan="2"><div class="space-6"></div></td></tr>
 			<tr>
 				<td></td>
-				<td> <a href="#">Non even Split</a> | <a href="#">Uncheck all</a></td>
+				<td> <a href="#">Non even Split</a> | <a href="#" id="uncheckExpenses" onclick="uncheckExpenses()">Uncheck all</a></td>
 			</tr>
 		</table>
 	</div>
@@ -86,7 +95,20 @@ $('.date-picker').datepicker({
 .next().on(ace.click_event, function(){
 	//$(this).prev().focus();
 });
-
+function uncheckExpenses(){
+	if($('#uncheckExpenses').html() === 'Check all'){
+		$('#paidForGroup input').each(function(i,v){
+			$(this).prop('checked',true);
+		})
+		$('#uncheckExpenses').html('').html('UnCheck all');
+	}else{
+		$('#paidForGroup input').each(function(i,v){
+			$(this).prop('checked',false);
+		})
+		$('#uncheckExpenses').html('').html('Check all');
+	}
+	
+}
 function populateUserSelections(){
 	var userData = $('#user-group').getGridParam('data');
 	$('#paidByGroup').html('');
@@ -98,12 +120,21 @@ function populateUserSelections(){
 		$('#paidForGroup').append("<input type='checkbox' id='paidForUser_"+[i]+"' name='' style='margin-left: 3px;margin-right: 3px' value='"+userDetailId+"' checked>" +displayName) +"</input>&nbsp";
 	});
 	$('#expenseDescription').focus();
-	
-	
-	
 }
+
+function getAllUser(){
+	var displayNames = '';
+	var userTableData = $('#user-group').getGridParam('data');
+	$.each(userTableData, function(i, v){
+		displayNames += (userTableData[i].userDetailId + ':' +userTableData[i].addDisplayName+';');
+	});
+	displayNames = displayNames.substring(0,displayNames.length-1);
+	return displayNames;
+}
+
 $( "#addExpense,#addExpenses" ).on('click', function(e) {
 	e.preventDefault();
+	$('.nav-tabs li:eq(1) a').tab('show')
 	$( "#expense-dialog-message" ).removeClass('hide').dialog({
 		resizable: false,
 		width: '500',
@@ -138,22 +169,22 @@ function addExpense() {
 	var service = '/addExpense';
 	var url = context + service;
 	var paidFor = [];
-	$('input:checkbox[id^="paidForUser"]:checked').each(function () {
-       // alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());
-       var userDetailsTOPaidFor ={
-			"addPersonName": '',
-			"addDisplayName": '',
-			"addComments": '',
-			"uniqueSheetId" : uniqueSheetId,
-			"userDetailId": $(this).val()
-		}
-       paidFor.push(userDetailsTOPaidFor);
-    });
 	var expenseAmount =  $('#expenseAmount').val();
 	var expenseDate = $('#expenseDate').val();
 	var expenseDescription = $('#expenseDescription').val();
 	var uniqueSheetId = $('#uniqueSheetId').val();
 	var paidBy = $('#paidByGroup :checked').val();
+	$('input:checkbox[id^="paidForUser"]:checked').each(function () {
+	       // alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());
+	       var userDetailsTOPaidFor ={
+				"addPersonName": '',
+				"addDisplayName": '',
+				"addComments": '',
+				"uniqueSheetId" : uniqueSheetId,
+				"userDetailId": $(this).val()
+			}
+	       paidFor.push(userDetailsTOPaidFor);
+	   });
 	var userDetailsTOPaidBy ={
 			"addPersonName": '',
 			"addDisplayName": '',
@@ -177,14 +208,11 @@ function hideLoading(){
 	$('#preLoadingIcon').hide();
 }
 var context = "${pageContext.request.contextPath}";
-$(document).ready(function(){
-	//fetchExpenseTable();
-});
 
 function fetchExpenseTable(){
 	var service = '/getExpenseDetails';
 	var url = context + service;
-	var uniqueSheetId = $('#uniqueSheetId').val();
+	var uniqueSheetId = $('#uniqueSheetId').val().replace(/\"/g, "");
 	$.postJSONData(url, uniqueSheetId , refreshExpenseTable, '', 'preLoadingIcon');
 }
 
@@ -192,6 +220,7 @@ function refreshExpenseTable(data){
 	var expenseData = data.expenseDetailsTO;
 	if(expenseData == '' || expenseData == null || expenseData.length == 0){
 		$('#simple-table-expense').removeClass('hide');
+		hideLoading();
 		return false;
 	}else{
 		$('#simple-table-expense').addClass('hide');
@@ -217,17 +246,25 @@ function refreshExpenseTable(data){
 	    })
 
 jQuery(grid_selector).jqGrid({
-	data: userData,
+	data: expenseData,
 	datatype: "local",
-	height: 350,
-	colNames:['Person Name','Display Name','Description Comments','<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i> Last Updated', 'Actions'],
+	height: 250,
+	rownumbers: true,
+	colNames:['Date','Description','Who Paid?','Amount', 'For Whom','Action'],
 	colModel:[
 		/* {name:'id',index:'id', width:40, sorttype:"int", editable: false}, */
 		/* {name:'sdate',index:'sdate',width:90, editable:true, sorttype:"date",unformat: pickDate}, */
-		{name:'addPersonName',index:'addPersonName', width:80, sortable:true, editable: true,editoptions:{size:"20",maxlength:"30"}},
-		{name:'addDisplayName',index:'addDisplayName', width:80, sortable:true, editable: true,editoptions:{size:"20",maxlength:"30"}},
-		{name:'addComments',index:'addComments', width:120,sortable:true, editable: true, editoptions:{size:"20",maxlength:"30"}},
-		{ name:'lastUpdateTime',index:'lastUpdateTime', width:80, sortable:true,editable: false},
+		{name:'expenseDate',index:'expenseDate', width:80, sortable:true, editable: true,sorttype:"date",unformat: pickDate},
+		{name:'expenseDesc',index:'expenseDesc', width:80, sortable:true, editable: true,editoptions:{size:"20",maxlength:"30"}},
+		{name:'paidBy.addDisplayName',index:'paidBy.addDisplayName', width:120, sortable:true, editable: true,edittype:"select",editoptions:{value: getAllUser()}},
+		{name:'paidAmt',index:'paidAmt', width:80, sortable:true, editable: false},
+		{name:'paidFor',index:'paidFor', width:80, sortable:true, editable: false, formatter: function (cellvalue) {
+			var retVal ='';
+			$.each(cellvalue, function(i,v){
+				retVal += (cellvalue[i].addDisplayName + ', ');
+			})
+            return retVal.substring(0,retVal.length-2);
+        }},
 		{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 			formatter:'actions', 
 			formatoptions:{ 
@@ -262,7 +299,7 @@ jQuery(grid_selector).jqGrid({
 	}
 	//,autowidth: true,
 });
-$(grid_selector).trigger('reloadGrid');
+//$(grid_selector).trigger('reloadGrid');
 $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 
 //enable search/filter toolbar

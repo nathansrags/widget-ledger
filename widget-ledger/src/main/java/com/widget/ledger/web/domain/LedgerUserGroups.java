@@ -2,21 +2,20 @@ package com.widget.ledger.web.domain;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+/**
+ * @author 175049
+ *
+ */
 @Entity
 @Table(name = "LEDGER_USER_GROUPS")
 public class LedgerUserGroups {
@@ -24,7 +23,7 @@ public class LedgerUserGroups {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "LEDGER_USER_ID")
-	private int ledgerUserId;
+	private Long ledgerUserId;
 
 	@Column(name = "LEDGER_USER_NAME")
 	private String userName;
@@ -57,18 +56,14 @@ public class LedgerUserGroups {
 	@JoinColumn(name = "LEDGER_SHEETS_ID")
 	private LedgerSheets userSheet;
 
-	@ManyToMany(mappedBy = "paidFor")
+/*	@ManyToMany(mappedBy = "paidFor")
 	private List<LedgerExpenses> paidFor;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
-	private LedgerExpenses paidBy;
-
-	public int getLedgerUserId() {
+*/	
+	public Long getLedgerUserId() {
 		return ledgerUserId;
 	}
 
-	public void setLedgerUserId(int ledgerUserId) {
+	public void setLedgerUserId(Long ledgerUserId) {
 		this.ledgerUserId = ledgerUserId;
 	}
 
@@ -152,7 +147,7 @@ public class LedgerUserGroups {
 		this.ledgerUserCommnets = ledgerUserCommnets;
 	}
 
-	public List<LedgerExpenses> getPaidFor() {
+	/*public List<LedgerExpenses> getPaidFor() {
 		return paidFor;
 	}
 
@@ -160,12 +155,15 @@ public class LedgerUserGroups {
 		this.paidFor = paidFor;
 	}
 
+	@OneToOne(fetch=FetchType.LAZY)
+	private LedgerExpenses paidBy;
+
 	public LedgerExpenses getPaidBy() {
 		return paidBy;
 	}
 
-	public void setPaidBy(final LedgerExpenses paidBy) {
+	public void setPaidBy(LedgerExpenses paidBy) {
 		this.paidBy = paidBy;
-	}
-
+	}*/
+	
 }

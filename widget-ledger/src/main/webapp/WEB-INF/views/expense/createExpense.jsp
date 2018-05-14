@@ -29,15 +29,15 @@
 							<i class="ace-icon fa fa-check bigger-80"></i> Success
 						</button>
 						<div class="nav-search" id="nav-search">
-							<form class="form-search">
+							<form class="form-search" method="POST" action="<c:url value='retriveSheet' />">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<input type="text" placeholder="Search ..." class="nav-search-input" name="uniqueSheetId" id="uniqueSheetId"  autocomplete="off" value="${displayTO.uniqueSheetId}"/>
 									<i class="ace-icon fa fa-search nav-search-icon"></i>
 								</span>
 							</form>
 						</div><!-- /.nav-search -->
 					</div>
-
 					<div class="page-content">
 						<div class="ace-settings-container" id="ace-settings-container">
 							<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
@@ -71,8 +71,21 @@
 								</div><!-- /.pull-left -->
 							</div><!-- /.ace-settings-box -->
 						</div><!-- /.ace-settings-container -->
-
-						<div class="row">
+					<div class="alert alert-danger col-lg-6 hide"  id="errorDiv">
+						<button type="button" class="close" data-dismiss="alert">
+							<i class="ace-icon fa fa-times"></i>
+						</button>
+						<strong> <i class="ace-icon fa fa-times"></i> Oops!
+						</strong>
+					</div>
+					<div class="row">
+						<small id="breadCrumbsPerson">Persons</small>|
+						<small id="breadCrumbsExpense">expenses </small>|
+						<small id="breadCrumbsTotal">Total spent:</small>|
+						<small id="breadCrumbsCreatedOn">Created on :</small>|
+						<small id="breadCrumbsUpdatedOn">Last updated on :</small>
+					</div>
+					<div class="row">
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
 							<div class="row">
@@ -103,7 +116,6 @@
 											<jsp:include page="expenseTable.jsp" />
 										</div>
 										<div id="payments" class="tab-pane">
-											<table id="payments-jqTable"></table>
 											<jsp:include page="balanceTable.jsp" />
 										</div>
 									</div>
